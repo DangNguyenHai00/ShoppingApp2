@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using ShoppingApp2.Service;
 using ShoppingApp2.Data.Models;
 using ShoppingApp2.Data.DTO.Request;
-using ShoppingApp2.Data.DTO.Response;
+//using ShoppingApp2.Data.DTO.Response;
 
 namespace ShoppingApp2.Controllers
 {
@@ -54,6 +54,19 @@ namespace ShoppingApp2.Controllers
         {
             var response = await _adminService.CreateAdmin(dto);
             return Ok(response);
+        }
+
+        [HttpPost]
+        [Route("Restock")]
+        public async Task<IActionResult> RestockItem(RestockRequest dto)
+        {
+            var item = await _adminService.Restock(dto.Id, dto.number);
+            if (item != null)
+            {
+                return Ok(item);
+            }
+            else
+                return BadRequest("ItemId does not exist.");
         }
     }
 }

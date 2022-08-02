@@ -19,7 +19,8 @@ namespace ShoppingApp2.Service
 
         public async Task<bool> AddNewItem(Item item)
         {
-            var value = await _unitOfWork.ItemRepo.AddItem(item);
+            var new_item = new Item() { ItemType = item.ItemType, Manufacturer = item.Manufacturer, Price = item.Price, RemainingNumber = item.RemainingNumber };
+            var value = await _unitOfWork.ItemRepo.AddItem(new_item);
             if (value == true)
             {
  //               _logger.LogInformation("Added new item with id {0}", item.Id);
@@ -77,6 +78,12 @@ namespace ShoppingApp2.Service
             //           _logger.LogInformation("Show list of customers.");
 
             return admins;
+        }
+
+        public async Task<Item> Restock(int id,int number)
+        {
+            var item = await _unitOfWork.ItemRepo.Restock(id,number);
+            return item;
         }
     }
 }

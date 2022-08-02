@@ -59,16 +59,16 @@ namespace ShoppingApp2.Repository.Repository
             return false;
         }
 
-        public async Task<bool> TakeOutItem(int id, int number)
+        public async Task<Item> TakeOutItem(int id, int number)
         {
             var exist = await _context.Items.Where(x => id == x.Id).FirstOrDefaultAsync();
 
             if (exist != null && exist.RemainingNumber > 0)
             {
                 exist.RemainingNumber -= number;
-                return true;
+                return exist;
             }
-            return false;
+            return null;
         }
     }
 }

@@ -8,5 +8,6 @@ namespace ShoppingApp2.Repository.IRepository
         Task<bool> AddItem(Item item);
         Task<Item> GetById(int id);
         Task<bool> TakeOutItem(int id, int number);
+        Task<Item> Restock(int id, int number);
     }
 }

@@ -24,5 +24,14 @@ namespace ShoppingApp2.Controllers
             return Ok(response);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("GetItems")]
+        public async Task<IActionResult> GetAllItems()
+        {
+            var response = await _shopManagament.GetItems();
+            return Ok(response);
+        }
+
     }
 }
