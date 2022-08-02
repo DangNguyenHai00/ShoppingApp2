@@ -65,9 +65,11 @@ namespace ShoppingApp2.Service
 
         private async Task<bool> CreateNewReceipt(Cart cart)
         {
-            Receipt receipt = new Receipt();
-            receipt.User.UserName = cart.UserName;
-            receipt.TotalPurchased = await TotalSum(cart);
+            Receipt receipt = new Receipt()
+            {
+                UserName = cart.UserName,
+                TotalPurchased = await TotalSum(cart),
+            };
             try
             {
                 bool key1 = _unitOfWork.ReceiptRepo.NewReceipt(receipt);

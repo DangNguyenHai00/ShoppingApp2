@@ -8,7 +8,7 @@ namespace ShoppingApp2.Data.DTO.Request
         [Required]
         public string UserName { get; set; }
         [Required]
-        public List<PurchasingItem> Items { get; set; }
+        public IEnumerable<PurchasingItem> Items { get; set; }
     }
 
     public class PurchasingItem

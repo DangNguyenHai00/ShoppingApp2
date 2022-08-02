@@ -12,7 +12,7 @@ namespace ShoppingApp2.Data.Models
         [Required]
         public double TotalPurchased { get; set; }
         [Required]
-        public IdentityUser User { get; set; }
+        public string UserName { get; set; }
 //        public ICollection<Item> Items { get; set; }
     }
 }

@@ -82,7 +82,7 @@ namespace ShoppingApp2.Service
 
         public async Task<Item> Restock(int id,int number)
         {
-            var item = await _unitOfWork.ItemRepo.Restock(id,number);
+            var item = await _unitOfWork.ItemRepo.RestockItem(id,number);
             return item;
         }
     }
