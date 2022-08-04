@@ -60,6 +60,10 @@ namespace ShoppingApp2.Controllers
         [Route("Restock")]
         public async Task<IActionResult> RestockItem(RestockRequest dto)
         {
+            if(dto.number<=0)
+            {
+                return BadRequest("Restock quantity must bigger then zero.");
+            }
             var item = await _adminService.Restock(dto.Id, dto.number);
             if (item != null)
             {

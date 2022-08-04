@@ -10,8 +10,8 @@ namespace ShoppingApp2.Data
         {
 
         }
-        public DbSet<Item> Items { get; set; } = null!;
-        public DbSet<Receipt> Receipts { get; set; } = null!;
+        public virtual DbSet<Item> Items { get; set; } = null!;
+        public virtual DbSet<Receipt> Receipts { get; set; } = null!;
         //        public DbSet<User> Users { get; set; } = null!;
     }
 }

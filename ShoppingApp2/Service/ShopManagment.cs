@@ -8,18 +8,18 @@ namespace ShoppingApp2.Service
     public class ShopManagement
     {
         private readonly IUnitOfWork _unitOfWork;
-    //    private readonly ILogger _logger;
+        private readonly ILogger _logger;
 
-        public ShopManagement(IUnitOfWork unitOfWork)
+        public ShopManagement(IUnitOfWork unitOfWork,ILogger<ShopManagement> logger)
         {
             _unitOfWork = unitOfWork;
-   //         _logger = logger;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<Item>> GetItems()
         {
             var items = await _unitOfWork.ItemRepo.All();
-  //          _logger.LogInformation("Show list of items.");
+            _logger.LogInformation("Show list of items.");
             return items;
         }
 
@@ -30,6 +30,7 @@ namespace ShoppingApp2.Service
             {
 
                 await _unitOfWork.CompleteAsync();
+//                _logger.LogInformation("New receipt has been created.");
                 return new PurchaseResponse() { Success = true, Message = "Your cart was ordered successfully.", Total = await TotalSum(cart) };
             }
             else
@@ -76,7 +77,7 @@ namespace ShoppingApp2.Service
                 bool key2 = await TakeOutItems(cart);
                 if (key1 && key2)
                 {
-           //         _logger.LogInformation("New receipt was created");
+                    _logger.LogInformation("New receipt was created");
                     await _unitOfWork.CompleteAsync();
                     return true;
                 }
@@ -84,7 +85,7 @@ namespace ShoppingApp2.Service
             }
             catch (Exception ex)
             {
-           //     _logger.LogError(ex, "Something wrong has happened", typeof(ShopManagement));
+                _logger.LogError(ex, "Something wrong has happened", typeof(ShopManagement));
                 return false;
             }
         }

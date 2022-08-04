@@ -10,11 +10,12 @@ namespace ShoppingApp2.Service
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IUnitOfWork _unitOfWork;
-
-        public AdminService(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork)
+        private readonly ILogger _logger;
+        public AdminService(UserManager<IdentityUser> userManager, IUnitOfWork unitOfWork,ILogger<AdminService> logger)
         {
             _userManager = userManager;
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public async Task<bool> AddNewItem(Item item)
@@ -23,8 +24,8 @@ namespace ShoppingApp2.Service
             var value = await _unitOfWork.ItemRepo.AddItem(new_item);
             if (value == true)
             {
- //               _logger.LogInformation("Added new item with id {0}", item.Id);
                 await _unitOfWork.CompleteAsync();
+                _logger.LogInformation("Added new item with id {0}", item.Id);
             }
             return value;
         }
@@ -32,7 +33,7 @@ namespace ShoppingApp2.Service
         public async Task<IEnumerable<IdentityUser>> GetCustomers()
         {
             var customers = await _userManager.GetUsersInRoleAsync("Customer");
- //           _logger.LogInformation("Show list of customers.");
+            _logger.LogInformation("Show list of customers.");
 
             return customers;
         }
@@ -75,7 +76,7 @@ namespace ShoppingApp2.Service
         public async Task<IEnumerable<IdentityUser>> GetAdmins()
         {
             var admins = await _userManager.GetUsersInRoleAsync("Admin");
-            //           _logger.LogInformation("Show list of customers.");
+            _logger.LogInformation("Show list of admins.");
 
             return admins;
         }
@@ -83,6 +84,10 @@ namespace ShoppingApp2.Service
         public async Task<Item> Restock(int id,int number)
         {
             var item = await _unitOfWork.ItemRepo.RestockItem(id,number);
+            if (item!=null)
+            {
+                _logger.LogInformation("Item with id {0} has been restocked with amount of {1} units.",id,number);
+            }
             return item;
         }
     }

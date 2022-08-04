@@ -15,11 +15,13 @@ namespace ShoppingApp2.Service
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtConfig _jwtConfig;
         private readonly RoleManager<IdentityRole> _roleManager;
-        public AuthenticationService(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor, RoleManager<IdentityRole> roleManager)
+        private readonly ILogger _logger;
+        public AuthenticationService(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfig> optionsMonitor, RoleManager<IdentityRole> roleManager,ILogger<AuthenticationService> logger)
         {
             _userManager = userManager;
             _jwtConfig = optionsMonitor.CurrentValue;
             _roleManager = roleManager;
+            _logger = logger;
         }
         public async Task<RegistrationResponse> CreateUser(UserRegistrationRequest dto)
         {
@@ -40,6 +42,7 @@ namespace ShoppingApp2.Service
             if (isCreated.Succeeded)
             {
                 var key = await _userManager.AddToRoleAsync(new_user, "Customer");
+                _logger.LogInformation("New account has been created with username {0}",dto.Email);
                 return (new RegistrationResponse
                 {
                     Success = true,
@@ -87,7 +90,7 @@ namespace ShoppingApp2.Service
             }
 
             var jwtToken = await GenerateJwtToken(existing_user);
-
+            _logger.LogInformation("New JWT has been sent to user.");
             return new LoginResponse()
             {
                 Success = true,
@@ -132,6 +135,7 @@ namespace ShoppingApp2.Service
                 // We need to check if the role has been added successfully
                 if (roleResult.Succeeded)
                 {
+                    _logger.LogInformation("New role has beend added successfully.");
                     return String.Format("The role {0} has been added successfully",name);
                 }
                 else
